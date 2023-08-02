@@ -1,0 +1,4 @@
+{
+  /** 决定了入口文件将被如何加载, 可选值有 "module" 和 "text/javascript" */
+  "scriptType": "module"
+}

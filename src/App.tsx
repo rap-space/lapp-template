@@ -2,8 +2,8 @@ import React from "react";
 import { Routes, Route, Outlet, Link } from "react-router-dom";
 import './App.less';
 
-const About = React.lazy(() => import("./pages/About"));
 const Home = React.lazy(() => import("./pages/Home"));
+const About = React.lazy(() => import("./pages/About"));
 const Dashboard = React.lazy(() => import("./pages/Dashboard"));
 const NoMatch = React.lazy(() => import("./pages/NoMatch"));
 
