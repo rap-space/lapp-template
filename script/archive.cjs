@@ -4,6 +4,7 @@ const path = require('path');
 /* npm三方包 */
 const AdmZip = require('adm-zip'); // https://www.npmjs.com/package/adm-zip
 const readdirp = require('readdirp'); // https://www.npmjs.com/package/readdirp
+const pm = require('picomatch'); // https://www.npmjs.com/package/picomatch
 const chalk = require('chalk'); // https://www.npmjs.com/package/chalk
 const jsonc = require('jsonc').safe; // https://www.npmjs.com/package/jsonc
 const dayjs = require('dayjs'); // https://www.npmjs.com/package/dayjs
@@ -24,7 +25,12 @@ const logger = {
 // 定义常量
 const BUILD_DEST = 'build';
 const META_DEST = 'lapp-meta.json';
-const ZIP_NAME = `package-${dayjs().format('YYYY-MM-DD-HH:mm:ss')}.zip`;
+const ZIP_NAME = `package-${dayjs().format('YYYY-MM-DD-HH-mm-ss')}.zip`;
+const BUILD_WHITELIST = [
+  '*.js',
+  '*.css',
+  '*.json',
+];
 
 // 确保构建产物目录存在
 try {
@@ -53,8 +59,23 @@ try {
 const zip = new AdmZip();
 readdirp('.',
   {
-    fileFilter: ['!.DS_Store', '!*.log', '!*.zip'],
-    directoryFilter: ['!.git', '!node_modules', '!.vscode'],
+    fileFilter: (entry) => {
+        const { path, basename } = entry;
+        // 根据白名单过滤 build产物
+        if (path.indexOf(BUILD_DEST) === 0) {
+          return pm.isMatch(basename, BUILD_WHITELIST);
+        }
+        return pm.isMatch(basename, [
+          '!.DS_Store',
+          '!*.log',
+          '!*.zip',
+        ]);
+      },
+    directoryFilter: [
+      '!.git',
+      '!node_modules',
+      '!.vscode'
+    ],
     alwaysStat: true,
   })
   .on('data', (entry) => {
