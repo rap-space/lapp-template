@@ -2,8 +2,7 @@ import { useState } from 'react'
 import './Home.less'
 
 function HomePage() {
-  const [count, setCount] = useState(0)
-
+  const [count, setCount] = useState(0);
   return (
     <>
       <div>

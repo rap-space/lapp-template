@@ -1,6 +1,7 @@
 import fs from 'fs';
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import lappPlugin from './lapp-vite-plugin'
 
 let pkgJson = {};
 try {
@@ -10,15 +11,17 @@ try {
   throw error;
 }
 
-/** 根据构建环境，判断静态资源依赖路径 */
+/** 构造静态资源依赖路径 */
 let base = `https://1688-lapp.oss-cn-hangzhou.aliyuncs.com/pc-pc_work-pc_work_plugin-${pkgJson.appKey}/${pkgJson.version}/`;
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
+    lappPlugin(),
   ],
   base,
   build: {
+    sourcemap: 'hidden',
     target: 'es2015',
     outDir: 'build',
     rollupOptions: {

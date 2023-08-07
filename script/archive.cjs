@@ -6,7 +6,6 @@ const AdmZip = require('adm-zip'); // https://www.npmjs.com/package/adm-zip
 const readdirp = require('readdirp'); // https://www.npmjs.com/package/readdirp
 const pm = require('picomatch'); // https://www.npmjs.com/package/picomatch
 const chalk = require('chalk'); // https://www.npmjs.com/package/chalk
-const jsonc = require('jsonc').safe; // https://www.npmjs.com/package/jsonc
 const dayjs = require('dayjs'); // https://www.npmjs.com/package/dayjs
 
 // 定义日志方法
@@ -18,8 +17,19 @@ const logger = {
     console.log(chalk.red('[error]'), ...args)
   },
   info: (...args) => {
-    console.log(chalk.green('[info]'),...args)
+    console.log(chalk.green('[info]'), ...args)
   },
+}
+
+// 定义文件检查方法
+const fileChecker = (fileDest) => {
+  try {
+    fs.readFileSync(fileDest);
+  } catch (error) {
+    const messege = `'${fileDest}' doesn't exsist, please make sure you've done 'npm run build' !`;
+    logger.error(messege);
+    process.exit(1);
+  }
 }
 
 // 定义常量
@@ -27,32 +37,24 @@ const BUILD_DEST = 'build';
 const META_DEST = 'lapp-meta.json';
 const ZIP_NAME = `package-${dayjs().format('YYYY-MM-DD-HH-mm-ss')}.zip`;
 const BUILD_WHITELIST = [
+  //  构建产物白名单
   '*.js',
   '*.css',
   '*.json',
 ];
 
-// 确保构建产物目录存在
-try {
-  const buildDir = fs.readdirSync(BUILD_DEST);
-} catch (error) {
-  logger.error(`Directory 'build' doesn't exsist, please make sure you've done 'npm run build' !`);
-  return;
-}
+// 确保 index.js 和 index.css 两个 entry 存在
+fileChecker(path.join(BUILD_DEST, 'index.js'));
+fileChecker(path.join(BUILD_DEST, 'index.css'));
 
-// 以jsonc格式，解析 lapp-meta.json，删除其中注释，并将其复制到构建产物根目录中
+// 确保构建产物中的 lapp-meta.json 存在且合法
+const builtMetaPath = path.join(BUILD_DEST, META_DEST);
 try {
-  const lappMetaBuffer = fs.readFileSync(META_DEST);
-  const [err, result] = jsonc.parse(lappMetaBuffer.toString());
-  if (err) {
-    logger.log(`Failed to parse JSON: ${err.message}`);
-    return;
-  }
-  logger.log('lapp-meta: \n', result);
-  fs.writeFileSync(path.join(BUILD_DEST, META_DEST), JSON.stringify(result, null, 4));
+  const lappMetaBuffer = fs.readFileSync(builtMetaPath);
+  JSON.parse(lappMetaBuffer.toString());
 } catch (error) {
-  logger.error(`File ${META_DEST} doesn't exsist, please make sure you've configured it right !`);
-  return;
+  logger.error(`File ${builtMetaPath} doesn't exsist or isn't valid JSON, please make sure you've configured it right !`);
+  process.exit(1);
 }
 
 // 遍历目录，排除无用文件，生产压缩包
@@ -60,17 +62,18 @@ const zip = new AdmZip();
 readdirp('.',
   {
     fileFilter: (entry) => {
-        const { path, basename } = entry;
-        // 根据白名单过滤 build产物
-        if (path.indexOf(BUILD_DEST) === 0) {
-          return pm.isMatch(basename, BUILD_WHITELIST);
-        }
-        return pm.isMatch(basename, [
-          '!.DS_Store',
-          '!*.log',
-          '!*.zip',
-        ]);
-      },
+      const { path, basename } = entry;
+      // 根据白名单过滤 build产物
+      if (path.indexOf(BUILD_DEST) === 0) {
+        return pm.isMatch(basename, BUILD_WHITELIST);
+      }
+      // 过滤掉不应打包的内容
+      return !pm.isMatch(basename, [
+        '.DS_Store',
+        '*.log',
+        '*.zip',
+      ]);
+    },
     directoryFilter: [
       '!.git',
       '!node_modules',
@@ -80,7 +83,7 @@ readdirp('.',
   })
   .on('data', (entry) => {
     const { path, stats: { size } } = entry;
-    logger.log(`${JSON.stringify({ path, size })}`);
+    logger.log(`addFile: ${path}`);
     zip.addFile(path, fs.readFileSync(path));
   })
   .on('warn', error => logger.error('non-fatal error', error))
