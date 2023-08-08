@@ -1,27 +1,24 @@
-import fs from 'fs';
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import lappPlugin from './lapp-vite-plugin'
+import { getJsonOrDie } from './script/utils.mjs'
 
-let pkgJson = {};
-try {
-  const pkgJsonBuffer = fs.readFileSync('package.json');
-  pkgJson = JSON.parse(pkgJsonBuffer.toString());
-} catch (error) {
-  throw error;
-}
-
+/** 根据命令行入参，定义模式常量 */
+const MODE = process.argv.indexOf('--watch') !== -1 ? 'development' : 'production';
 /** 构造静态资源依赖路径 */
-let base = `https://1688-lapp.oss-cn-hangzhou.aliyuncs.com/pc-pc_work-pc_work_plugin-${pkgJson.appKey}/${pkgJson.version}/`;
+const { appKey, version } = getJsonOrDie('package.json');
+const base = `https://1688-lapp.oss-cn-hangzhou.aliyuncs.com/pc-pc_work-pc_work_plugin-${appKey}/${version}/`;
+
 // https://vitejs.dev/config/
 export default defineConfig({
+  mode: MODE,
   plugins: [
     react(),
     lappPlugin(),
   ],
   base,
   build: {
-    sourcemap: 'hidden',
+    sourcemap: MODE === 'development',
     target: 'es2015',
     outDir: 'build',
     rollupOptions: {

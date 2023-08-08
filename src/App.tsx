@@ -30,6 +30,7 @@ function Layout() {
 }
 
 export default function App() {
+  // console.log(hey);
   return (
     <div>
       <React.Suspense fallback={<>...</>}>
