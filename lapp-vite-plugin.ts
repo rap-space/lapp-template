@@ -9,10 +9,10 @@ import { BUILD_DEST, META_DEST, CDN_DOMAIN } from './script/misc/config.mjs'
 export default function lappPlugin() {
   const { appKey, version } = getJsonOrDie('package.json');
   if (typeof appKey !== 'string') {
-    gracefulSuicide('Please make sure appKey is defined in package.json');
+    gracefulSuicide('Please make sure appKey is defined in package.json according to README.md');
   }
   if (typeof version !== 'string') {
-    gracefulSuicide('Please make sure version is defined in package.json');
+    gracefulSuicide('Please make sure version is defined in package.json according to README.md');
   }
   
   let browserOpened = false;

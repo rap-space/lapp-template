@@ -13,4 +13,4 @@ export const BUILD_WHITELIST = [
   '*.json',
 ];
 /** 线上 CDN 域名 */
-export const CDN_DOMAIN = '1688-lapp.oss-cn-hangzhou.aliyuncs.com';
+export const CDN_DOMAIN = 'open-isv-assets.1688.com';

@@ -8,8 +8,7 @@
     "dev": "vite build --watch",
     "build": "tsc && vite build",
     "archive": "npm run build && node ./script/archive.mjs",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
     "react": "^18.2.0",
