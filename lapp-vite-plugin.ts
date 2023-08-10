@@ -3,11 +3,10 @@ import path from 'path'
 import { safe as jsonc } from 'jsonc' // https://www.npmjs.com/package/jsonc
 import chalk from 'chalk' // https://www.npmjs.com/package/chalk
 import open from 'open' // https://www.npmjs.com/package/open
-import { getJsonOrDie, gracefulSuicide, logger } from './script/utils.mjs'
+import { getJsonOrDie, gracefulSuicide } from './script/misc/utils.mjs'
+import { BUILD_DEST, META_DEST, CDN_DOMAIN } from './script/misc/config.mjs'
 
 export default function lappPlugin() {
-  const BUILD_DEST = 'build';
-  const META_DEST = 'lapp-meta.json';
   const { appKey, version } = getJsonOrDie('package.json');
   if (typeof appKey !== 'string') {
     gracefulSuicide('Please make sure appKey is defined in package.json');
@@ -38,7 +37,7 @@ export default function lappPlugin() {
         // 开发态下，初次打包完成，提示调试信息，并打开页面
         const devUrl = `https://page.1688.com/html/isv-bridge.html?appKey=${appKey}&version=${version}`;
         const buildDestFullPath = path.resolve(path.join(__dirname, BUILD_DEST));
-        const proxyRule = `^***1688-lapp.oss-cn-hangzhou.aliyuncs.com/pc-pc_work-pc_work_plugin-${appKey}/*/*** file://${buildDestFullPath}/$3`;
+        const proxyRule = `^***${CDN_DOMAIN}/pc-pc_work-pc_work_plugin-${appKey}/*/*** file://${buildDestFullPath}/$3`;
         console.log(chalk.cyan('\n====================== Environment Info =====================\n'))
         console.log(chalk.cyan(`
 lapp-meta.json:

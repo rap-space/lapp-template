@@ -7,17 +7,10 @@ import readdirp from 'readdirp'; // https://www.npmjs.com/package/readdirp
 import pm from 'picomatch'; // https://www.npmjs.com/package/picomatch
 import dayjs from 'dayjs'; // https://www.npmjs.com/package/dayjs
 import { logger, getFileBufferOrDie, getJsonOrDie } from './utils.mjs';
+import { BUILD_DEST, META_DEST, BUILD_WHITELIST } from './config.mjs';
 
 // 定义常量
-const BUILD_DEST = 'build';
-const META_DEST = 'lapp-meta.json';
 const ZIP_NAME = `package-${dayjs().format('YYYY-MM-DD-HH-mm-ss')}.zip`;
-const BUILD_WHITELIST = [
-  //  构建产物白名单
-  '*.js',
-  '*.css',
-  '*.json',
-];
 
 // 确保 index.js 和 index.css 两个 entry 存在
 getFileBufferOrDie(path.join(BUILD_DEST, 'index.js'));

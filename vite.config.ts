@@ -1,14 +1,15 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import lappPlugin from './lapp-vite-plugin'
-import { getJsonOrDie } from './script/utils.mjs'
+import { getJsonOrDie } from './script/misc/utils.mjs'
+import { CDN_DOMAIN } from './script/misc/config.mjs'
 
 /** 根据命令行入参，定义模式常量 */
 const MODE = process.argv.indexOf('--watch') !== -1 ? 'development' : 'production';
 
 /** 构造静态资源依赖路径 */
 const { appKey, version } = getJsonOrDie('package.json');
-const base = `https://1688-lapp.oss-cn-hangzhou.aliyuncs.com/pc-pc_work-pc_work_plugin-${appKey}/${version}/`;
+const base = `https://${CDN_DOMAIN}/pc-pc_work-pc_work_plugin-${appKey}/${version}/`;
 
 // https://vitejs.dev/config/
 export default defineConfig({
