@@ -5,7 +5,7 @@
 ## 开发
 ### 初始化
 
-参照文档 [GuideLine](https://www.yuque.com/1688open/yizt6l/foc409#dEb8N) ，进行应用的创建和初始化后，得到appKey，
+参照文档 [GuideLine](https://www.yuque.com/1688open/support/foc409#dEb8N) ，进行应用的创建和初始化后，得到appKey，
 
 在 package.json 中，添加 appKey 和 version 字段：
  - appKey 为上一步在开放平台中申请的 appKey
@@ -45,9 +45,43 @@ npm run archive
 - 运行时容器，会根据 appKey 和 version 拉取静态资源【version不存在则根据appKey拉最新版本】，如果能拉到合法 lapp-meta.json ，则会走轻应用加载逻辑;
 - 轻应用加载时，会加载 index.js 以及 index.css 到容器中，其中 js scriptType 由 lapp-meta.json 定义;
 - index.js 需要自初始化，将 DOM 渲染到 id 为 root 的 div 节点中，需要自己处理分包的加载;
-- 容器内对 fetch 和 XMLHttpRequest 做了限制，除 1688 域内的白名单外，其余请求需通过 window.bridge 进行调用 【详参模板内相关示意代码】
+- 容器内无法访问 cookie 对象，且对 fetch 和 XMLHttpRequest 做了限制; 除 1688 域内的白名单外，其余请求需通过 window.bridge 进行调用
+
+```javascript
+// 直接调用开放平台的API，内部包含5个参数 {version, namespace, name, appkey, data}
+// https://open.1688.com/api/apidocdetail.htm?id=com.alibaba.product:alibaba.product.get-1&aopApiCategory=product_new
+window.bridge.call('open.api.request', {
+    version: '1',
+    namespace: 'com.alibaba.product',
+    name: 'alibaba.product.get',
+    data: {
+        productID: 54321,
+        webSite: '1688'
+    }
+}, (res) => {
+    console.log(res);
+});
+
+// 通过开放平台网关调用isv自己服务器的API，
+// 需要在应用管理界面，提前配置好代理通道，详参上文中的 语雀 GuideLine
+// 参数基本同 fetch，body 无需 stringify，用户信息会在 http header 中自动附加，用 userId 字段标识
+window.bridge.call('open.api.proxy', {
+    url: 'http://gw.open.1688.com/openapi/param2/1/system/currentTime/1323',
+    method: 'GET',
+    // headers: {},
+    // body: {}
+}, (res) => {
+    this.setState({
+        txt: JSON.stringify(res)
+    });
+});
+
+```
 
 ## MISC
 
 - [1688open 语雀支持文档](https://www.yuque.com/1688open/support)
-- “1688PC入端-ISV技术服务” 钉钉群号： 21738069 ，入群申请请备注 “公司 - 职位” ，空备注会被当做推广拒绝
+- “1688PC入端-ISV技术服务” 钉钉群号： 21738069 ，
+  - 入群申请请备注 “公司 - 职位” ，空备注会被当做推广拒绝
+  - 提问前请先参照上面的支持文档，并善用搜索
+  - 提问时请提供 appKey、version、涉及账号以及环境信息，以资参考

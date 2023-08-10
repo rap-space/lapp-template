@@ -30,17 +30,6 @@ function Layout() {
 }
 
 export default function App() {
-  // useEffect(() => {
-  //   console.log('嗨嗨嗨')
-  //   window.bridge.call('open.api.proxy', {
-  //     url: 'http://gw.open.1688.com/openapi/param2/1/system/currentTime/1323',
-  //     method: 'GET',
-  //     // headers: {},
-  //     // body: {}
-  //   }, (res) => {
-  //     console.log(res);
-  //   });
-  // }, []);
   return (
     <div>
       <React.Suspense fallback={<>...</>}>
