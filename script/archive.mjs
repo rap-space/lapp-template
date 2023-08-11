@@ -6,8 +6,8 @@ import AdmZip from 'adm-zip'; // https://www.npmjs.com/package/adm-zip
 import readdirp from 'readdirp'; // https://www.npmjs.com/package/readdirp
 import pm from 'picomatch'; // https://www.npmjs.com/package/picomatch
 import dayjs from 'dayjs'; // https://www.npmjs.com/package/dayjs
-import { logger, getFileBufferOrDie, getJsonOrDie } from './utils.mjs';
-import { BUILD_DEST, META_DEST, BUILD_WHITELIST } from './config.mjs';
+import { logger, getFileBufferOrDie, getJsonOrDie } from './misc/utils.mjs';
+import { BUILD_DEST, META_DEST, BUILD_WHITELIST } from './misc/config.mjs';
 
 // 定义常量
 const ZIP_NAME = `package-${dayjs().format('YYYY-MM-DD-HH-mm-ss')}.zip`;
