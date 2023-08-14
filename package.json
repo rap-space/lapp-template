@@ -1,7 +1,7 @@
 {
   "name": "lapp-template",
   "appKey": "7513506",
-  "version": "0.0.4",
+  "version": "0.0.1",
   "private": true,
   "type": "module",
   "scripts": {

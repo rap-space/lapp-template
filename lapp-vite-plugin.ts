@@ -51,10 +51,14 @@ ${proxyRule}
 
 Local Dev URL:
 ${chalk.underline(devUrl)}
+
+Default browser will be launched after 3 seconds...
 `));
         console.log(chalk.cyan('\n====================== Environment Info =====================\n'))
-        open(devUrl);
         browserOpened = true;
+        setTimeout(() => {
+          open(devUrl);
+        }, 3000);
       }
     },
   }
