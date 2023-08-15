@@ -34,5 +34,5 @@
     "typescript": "^5.1.6",
     "vite": "^4.4.8"
   },
-  "repository": "git@gitlab.alibaba-inc.com:fuwu-assets/lapp-template.git"
+  "repository": "git@github.com:rap-space/lapp-template.git"
 }
