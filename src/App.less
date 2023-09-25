@@ -1,11 +1,19 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
+.lapp-container {
 
-.router-link {
-  display: inline-block;
-  margin: 10px;
+  * {
+    // 默认全平台黑体
+    // https://github.com/zenozeng/fonts.css/blob/main/dist/fonts.css
+    font-family: -apple-system, "Noto Sans", "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial, "Liberation Sans", "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Source Han Sans SC", "Source Han Sans CN", "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", sans-serif;
+    // 统一盒模型
+    box-sizing: border-box;
+  }
+
+  .router-link {
+    display: inline-block;
+    margin: 10px;
+  }
+
+  a {
+    text-decoration: none;
+  }
 }

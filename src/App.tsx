@@ -31,7 +31,7 @@ function Layout() {
 
 export default function App() {
   return (
-    <div>
+    <div className="lapp-container">
       <React.Suspense fallback={<>...</>}>
         <Routes>
           <Route path="/" element={<Layout />}>
