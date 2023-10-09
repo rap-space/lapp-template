@@ -36,7 +36,7 @@ export default function lappPlugin() {
         // 开发态下，初次打包完成，提示调试信息，并打开页面
         const devUrl = `https://page.1688.com/html/isv-bridge.html?appKey=${appKey}&version=${version}`;
         const buildDestFullPath = path.resolve(path.join(__dirname, BUILD_DEST));
-        const proxyRule = `^***${CDN_DOMAIN}/pc-pc_work-pc_work_plugin-${appKey}/*/*** file://${buildDestFullPath}/$3`;
+        const proxyRule = `^***${CDN_DOMAIN}/pc-pc_work-pc_work_plugin-${appKey}/*/*** file://${path.join(buildDestFullPath, '$3')}`;
         console.log(chalk.cyan('\n====================== Environment Info =====================\n'))
         console.log(chalk.cyan(`
 lapp-meta.json:

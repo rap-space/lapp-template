@@ -11,7 +11,7 @@ const MODE = process.argv.indexOf('--watch') !== -1 ? 'development' : 'productio
 const { appKey, version } = getJsonOrDie('package.json');
 const base = `https://${CDN_DOMAIN}/pc-pc_work-pc_work_plugin-${appKey}/${version}/`;
 
-// https://vitejs.dev/config/
+// https://cn.vitejs.dev/config/
 export default defineConfig({
   mode: MODE,
   define: {

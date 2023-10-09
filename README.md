@@ -13,6 +13,10 @@
 
 ### 本地开发
 
+Windows系统，建议使用 [Linux子系统](https://learn.microsoft.com/zh-cn/windows/wsl/install) 作为开发环境，
+
+不建议使用 CMD、PowerShell 或者基于 POSIX 模拟环境的命令行（比如 git bash、cygwin等），容易出现不易排查和解决的环境问题
+
 ```bash
 # 安装依赖
 npm i
