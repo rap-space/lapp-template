@@ -75,8 +75,51 @@ window.bridge.call('open.api.proxy', {
     // headers: {},
     // body: {}
 }, (res) => {
-    this.setState({
-        txt: JSON.stringify(res)
+    console.log(res);
+});
+
+// 轻应用场景下，监听上层应用传来的消息，返回 Promise，这里只示例解析消息及处理的流程
+// 消息体入参中的 actionType 和 actionBody 格式，以及返回体出参中的 data 格式，
+// 模拟调试方法等，请参见 jumpFunction 的说明文档：https://www.yuque.com/1688open/support/xkezpe9wof04gsk8
+window.bridge.call('open.api.lapp.listen', {}, (message) => {
+    // message 为每个轻应用场景约定的消息体
+    const { actionType, actionBody } = message;
+    // actionType 为每个轻应用场景约定的消息类型，actionBody 为该消息类型对应入参
+    return new Promise((rs) => {
+        // 处理自己的业务逻辑
+        const result = (Math.floor(Math.random() * 2) == 0); // 这里抛个硬币，模拟业务成功失败
+        // 无论成功失败都走resolve，不走reject逻辑
+        if (result === true) {
+            // 业务成功
+            rs({
+                // 表示业务成功，此时上层应取data字段进行进一步处理，比如回填或者提交
+                success: true,
+                // 业务数据
+                data: {},
+                /************************* 以下是业务成功可选项目 *************************/
+                // 返回码
+                retCode: 'SUCCESS',
+                // 返回信息
+                retMessage: '处理成功',
+                // 追溯信息，由ISV自定义的 traceId 等等，便于排查问题
+                traceInfo: {}
+            });
+        } else {
+            // 业务失败
+            rs({
+                // 表示业务失败，此时上层应取 retMessage 字段展示给用户
+                success: false,
+                // 返回码
+                retCode: 'FAILURE',
+                // 返回信息
+                retMessage: '处理失败',
+                // 追溯信息，由ISV自定义的 traceId 等等，便于排查问题
+                traceInfo: {},
+                /************************* 以下是业务失败可选项目 *************************/
+                // 业务数据
+                data: {}
+            });
+        }
     });
 });
 
