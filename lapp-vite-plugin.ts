@@ -36,7 +36,9 @@ export default function lappPlugin() {
         // 开发态下，初次打包完成，提示调试信息，并打开页面
         const devUrl = `https://page.1688.com/html/isv-bridge.html?appKey=${appKey}&version=${version}`;
         const buildDestFullPath = path.resolve(path.join(__dirname, BUILD_DEST));
-        const proxyRule = `^***${CDN_DOMAIN}/pc-pc_work-pc_work_plugin-${appKey}/*/*** file://${path.join(buildDestFullPath, '$3')}`;
+        // windows 下路径分隔符是反斜杠，whistle 路径解析时，把 $3 前的反斜杠理解为转义了，这里多加一个反斜杠，来避免这个问题
+        const globSection = path.sep === '\\' ? '\\$3' : '$3';
+        const proxyRule = `^***${CDN_DOMAIN}/pc-pc_work-pc_work_plugin-${appKey}/*/*** file://${buildDestFullPath}${path.sep}${globSection}`;
         console.log(chalk.cyan('\n====================== Environment Info =====================\n'))
         console.log(chalk.cyan(`
 lapp-meta.json:
