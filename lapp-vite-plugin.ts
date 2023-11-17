@@ -44,8 +44,8 @@ export default function lappPlugin() {
 lapp-meta.json:
 ${lappMetaStrFormatted}
 
-Please use whistle as local proxy server:
-${chalk.underline('https://www.npmmirror.com/package/whistle')}
+Please install whistle as local proxy server:
+${chalk.underline('https://wproxy.org/whistle/install.html')}
 
 Example for whistle proxy rule:
 ${proxyRule}
