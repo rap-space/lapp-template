@@ -14,3 +14,9 @@ export const BUILD_WHITELIST = [
 ];
 /** 线上 CDN 域名 */
 export const CDN_DOMAIN = 'open-isv-assets.1688.com';
+
+/** 线上 CDN 路径映射 */
+export const CDN_PATH_MAP = {
+  'PC': 'pc-pc_work-pc_work_plugin-',
+  'MOBILE': 'mobile-mobile_app-mobile_app_plugin-'
+};

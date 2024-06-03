@@ -10,6 +10,7 @@
 在 package.json 中，添加 appKey 和 version 字段：
  - appKey 为上一步在开放平台中申请的 appKey
  - version 为当前迭代版本号，建议从 0.0.1 开始，遵循 [semver](https://semver.org/lang/zh-CN/) 语义化版本号标准【上传包时填写的版本号要与之统一】
+ - platform 为当前轻应用运行的平台，可选值有 PC 和 MOBILE
 
 ### 本地开发
 
