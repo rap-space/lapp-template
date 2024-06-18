@@ -29,11 +29,15 @@ npm run dev
 
 线上资源需要代理到本地构建产物，请参见终端输出信息。
 
-参照 https://wproxy.org/whistle/install.html 安装和配置whistle
+参照 https://wproxy.org/whistle/install.html 安装和配置whistle 【记得安装系统根证书并信任】
 
 设置系统全局代理 或者 浏览器插件配置代理，设为 whistle 的 127.0.0.1:8899 【默认一般是8899】
 
-代理规则，就是启动开发环境后，终端内输出的 Example for whistle proxy rule。
+【假如设置系统全局代理，记得清除浏览器的 DNS 缓存, 访问 chrome://net-internals#dns chrome://net-internals#sockets chrome://net-internals#proxy 把能清除的都清一遍，然后关闭标签页重开】
+
+w2 start 启动whistle后，访问 127.0.0.1:8899 打开 whisle 的 WebUI，
+
+WebUI rules 一栏的代理规则，就是启动开发环境后，终端内输出的 Example for whistle proxy rule
 
 请求会统一进 whistle，此时刷新目标页面，在 whistle 的 WebUI 中的 network 一栏中，应该能看到请求日志
  - 假如没有，请自查上面的代理配置是否正确生效；
