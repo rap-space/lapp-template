@@ -29,7 +29,9 @@ npm run dev
 
 线上资源需要代理到本地构建产物，请参见终端输出信息。
 
-参照 https://wproxy.org/whistle/install.html 安装和配置whistle 【记得安装系统根证书并信任】
+参照 https://wproxy.org/whistle/install.html 安装和配置whistle 
+
+【记得安装系统根证书并信任,记得安装系统根证书并信任,记得安装系统根证书并信任,重要的事情说三遍】
 
 设置系统全局代理 或者 浏览器插件配置代理，设为 whistle 的 127.0.0.1:8899 【默认一般是8899】
 
@@ -72,14 +74,12 @@ npm run archive
 
 ```javascript
 // 直接调用开放平台的API，内部包含5个参数 {version, namespace, name, appkey, data}
-// https://open.1688.com/api/apidocdetail.htm?id=com.alibaba.product:alibaba.product.get-1&aopApiCategory=product_new
+// https://open.1688.com/api/apidocdetail.htm?aopApiCategory=member&id=com.alibaba.account%3Aalibaba.account.basic-1
 window.bridge.call('open.api.request', {
     version: '1',
-    namespace: 'com.alibaba.product',
-    name: 'alibaba.product.get',
+    namespace: 'com.alibaba.account',
+    name: 'alibaba.account.basic',
     data: {
-        productID: 54321,
-        webSite: '1688'
     }
 }, (res) => {
     console.log(res);
@@ -144,10 +144,56 @@ window.bridge.call('open.api.lapp.listen', {}, (message) => {
 
 ```
 
+## 调试
+
+### PC轻应用调试
+
+PC轻应用运行在浏览器中，直接使用浏览器 devtools 即可调试；
+
+console 一栏中，将日志等级从 default 改为 verbose，即可看到更多日志内容
+
+### 无线轻应用调试
+
+无线轻应用，运行在阿里巴巴客户端中，直接调试不太方便，
+
+为此运行时添加了 eruda 调试器注入功能，在调试链接中添加 `__inject_eruda__=true` 参数之后，生成二维码手机扫码进入即可激活
+
 ## MISC
+
+### 无线轻应用 bridge 能力
+
+无线轻应用专属能力，依赖客户端实现，端外环境下，会尽量降级为 Web 实现
+
+```javascript
+/***
+在轻应用中新开页面
+【注意】
+1688 域内的链接，必须使用这种方式打开，（a 标签跳转、window.open、 location.href 等方式，会在轻应用 Web 容器中打开，从而导致官方页面功能异常）
+非 1688 链接，会跳默认浏览器打开
+***/
+window.bridge.call('open.api.lapp.openWindow', { url: 'https://m-fuwu.1688.com' }, console.log, console.error);
+/***
+关闭轻应用窗口
+***/
+window.bridge.call('open.api.lapp.closeWindow', {}, console.log, console.error);
+/***
+保存图像到相册
+【注意】
+- 仅支持 jpg 和 png 格式，svg 不支持，gif会截取第一帧
+- 在此基础上支持 base64 的 DataURL，不过不能过长否则不会成功
+***/
+window.bridge.call('open.api.lapp.saveImage', { url: 'https://gw.alicdn.com/imgextra/i1/O1CN01o263t41w5IkQetzvn_!!6000000006256-0-tps-4000-3008.jpg' }, console.log, console.error);
+window.bridge.call('open.api.lapp.saveImage', { url: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAABlJREFUKFNjlNj25T8DEYBxVCG+UKJ+8AAA+jkblec5Ef8AAAAASUVORK5CYII=' }, console.log, console.error);
+/***
+设置当前窗口标题
+***/
+window.bridge.call('open.api.lapp.setTitle', { title: '标题名' }, console.log, console.error);
+```
+
+### 答疑相关
 
 - [1688open 语雀支持文档](https://www.yuque.com/1688open/support)
 - “1688PC入端-ISV技术服务” 钉钉群号： 21738069 ，
-  - 入群申请请备注 “公司 - 职位” ，空备注会被当做推广拒绝
+  - 入群申请请备注 “公司 - 岗位 - 昵称” ，空备注会被当做推广拒绝
   - 提问前请先参照上面的支持文档，并善用搜索
   - 提问时请提供 appKey、version、涉及账号以及环境信息，以资参考
