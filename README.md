@@ -192,8 +192,4 @@ window.bridge.call('open.api.lapp.setTitle', { title: '标题名' }, console.log
 
 ### 答疑相关
 
-- [1688open 语雀支持文档](https://www.yuque.com/1688open/support)
-- “1688PC入端-ISV技术服务” 钉钉群号： 21738069 ，
-  - 入群申请请备注 “公司 - 岗位 - 昵称” ，空备注会被当做推广拒绝
-  - 提问前请先参照上面的支持文档，并善用搜索
-  - 提问时请提供 appKey、version、涉及账号以及环境信息，以资参考
+请优先检索 [1688open 语雀支持文档](https://www.yuque.com/1688open/support)，并善用 https://open.1688.com/console 右下角的智能答疑入口，进行问题检索和工单提报
