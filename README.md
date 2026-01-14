@@ -5,7 +5,7 @@
 ## 开发
 ### 初始化
 
-参照文档 [GuideLine](https://www.yuque.com/1688open/support/foc409#dEb8N) ，进行应用的创建和初始化后，得到appKey，
+参照文档 [GuideLine](https://alidocs.dingtalk.com/i/nodes/vy20BglGWOeOo0YYIY1eDRQ3JA7depqY) ，进行应用的创建和初始化后，得到appKey，
 
 在 package.json 中，添加 appKey 和 version 字段：
  - appKey 为上一步在开放平台中申请的 appKey
