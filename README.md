@@ -99,7 +99,7 @@ window.bridge.call('open.api.proxy', {
 
 // 轻应用场景下，监听上层应用传来的消息，返回 Promise，这里只示例解析消息及处理的流程
 // 消息体入参中的 actionType 和 actionBody 格式，以及返回体出参中的 data 格式，
-// 模拟调试方法等，请参见 jumpFunction 的说明文档：https://www.yuque.com/1688open/support/xkezpe9wof04gsk8
+// 模拟调试方法等，请参见 jumpFunction 的说明文档：https://alidocs.dingtalk.com/i/nodes/lyQod3RxJK3moMAATQZAqK75Jkb4Mw9r
 window.bridge.call('open.api.lapp.listen', {}, (message) => {
     // message 为每个轻应用场景约定的消息体
     const { actionType, actionBody } = message;
@@ -192,4 +192,6 @@ window.bridge.call('open.api.lapp.setTitle', { title: '标题名' }, console.log
 
 ### 答疑相关
 
-请优先检索 [1688open 语雀支持文档](https://www.yuque.com/1688open/support)，并善用 https://open.1688.com/console 右下角的智能答疑入口，进行问题检索和工单提报
+请优先检索 [1688 open 支持文档](https://alidocs.dingtalk.com/i/nodes/vy20BglGWOeOo0YYIY1eDRQ3JA7depqY)，并善用 https://open.1688.com/console 右下角的智能答疑入口，进行问题检索和工单提报
+
+
